@@ -68,6 +68,13 @@ deploy:
      condition: $TRAVIS_OS_NAME = osx
      tags: true
      all_branches: true
+
+after_deploy:
+  # push the build to github origin
+  - git add .
+  - git commit -m "Create and upbload build Plugins-'$TRAVIS_COMMIT'"
+  - git push
+
 notifications:
   on_success: change
   on_failure: change
