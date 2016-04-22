@@ -71,6 +71,7 @@ deploy:
      all_branches: true
 after-deploy:
  - "echo S3 Build Location: $S3_URL"
+ - "echo github build location: $HOME/artifacts/Plugins-$TRAVIS_COMMIT.zip"
 
 
 notifications:
