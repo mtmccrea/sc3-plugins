@@ -1,3 +1,7 @@
+# TEMP
+# mtm - This works with the cmake flags:
+# cmake -DSC_PATH=/Users/admin/src/GitHub/supercollider-AtkScopeDev -DMYPLUGIN_DIR=ATK ..
+
 #---------
 # includes
 #---------
@@ -165,9 +169,15 @@ else()
 endif()
 
 
+#[[  *mtm added block comment*
 foreach(DIR ${PLUGIN_DIRS})
     FIND_AND_BUILD_PLUGINS(${DIR})
 endforeach(DIR)
+*mtm added block comment* ]]
+
+FIND_AND_BUILD_PLUGINS(${MYPLUGIN_DIR})
+# end mtm edit
+
 
 # build source files placed in 'local' by the user (i.e. by default this does nothing)
 file(GLOB local_sources RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "local/*.cpp")
@@ -181,6 +191,8 @@ endforeach(plugin)
 install(DIRECTORY local DESTINATION "${INSTALL_DESTINATION_DISTRO}"
     FILES_MATCHING PATTERN "*.sc" PATTERN "*.scd" PATTERN "*.html" PATTERN "*.schelp" PATTERN "*.rtf")
 
+
+#[[  *mtm added block comment*
 #---------------------
 # plugins with extras:
 #---------------------
@@ -208,17 +220,17 @@ BUILD_PLUGIN(complexRes
              "" "complexRes")
 include_directories(DEINDUGens/include)
 BUILD_PLUGIN(JPverb
-"DEINDUGens/JPverbRaw.cpp" 
+"DEINDUGens/JPverbRaw.cpp"
              "" "JPverb")
-             set_property(TARGET JPverb APPEND PROPERTY COMPILE_DEFINITIONS SC_FAUST_PREFIX="\"\"") 
-             set_property(TARGET JPverb APPEND PROPERTY COMPILE_DEFINITIONS mydsp=JPVERB) 
-             set_property(TARGET JPverb APPEND PROPERTY COMPILE_DEFINITIONS NDEBUG) 
+             set_property(TARGET JPverb APPEND PROPERTY COMPILE_DEFINITIONS SC_FAUST_PREFIX="\"\"")
+             set_property(TARGET JPverb APPEND PROPERTY COMPILE_DEFINITIONS mydsp=JPVERB)
+             set_property(TARGET JPverb APPEND PROPERTY COMPILE_DEFINITIONS NDEBUG)
 BUILD_PLUGIN(Greyhole
-"DEINDUGens/GreyholeRaw.cpp" 
+"DEINDUGens/GreyholeRaw.cpp"
              "" "Greyhole")
-             set_property(TARGET Greyhole APPEND PROPERTY COMPILE_DEFINITIONS SC_FAUST_PREFIX="\"\"") 
-             set_property(TARGET Greyhole APPEND PROPERTY COMPILE_DEFINITIONS mydsp=GREYHOLE) 
-             set_property(TARGET Greyhole APPEND PROPERTY COMPILE_DEFINITIONS NDEBUG) 
+             set_property(TARGET Greyhole APPEND PROPERTY COMPILE_DEFINITIONS SC_FAUST_PREFIX="\"\"")
+             set_property(TARGET Greyhole APPEND PROPERTY COMPILE_DEFINITIONS mydsp=GREYHOLE)
+             set_property(TARGET Greyhole APPEND PROPERTY COMPILE_DEFINITIONS NDEBUG)
 
 # MembraneUGens
 BUILD_PLUGIN(MembraneUGens "MembraneUGens/Membrane_shape.c;MembraneUGens/Membrane.cpp"
@@ -234,7 +246,7 @@ endif()
 # OteyPianoUGens
 BUILD_PLUGIN(OteyPianoUGens "OteyPianoUGens/OteyPiano.cpp;OteyPianoUGens/dwgs.cpp;OteyPianoUGens/filter.cpp;OteyPianoUGens/hammer.cpp;OteyPianoUGens/reverb.cpp"
              "" "OteyPianoUGens")
-             
+
 # PitchDetectionUGens
 file(GLOB PitchDetectionSources PitchDetection/*cpp)
 
@@ -324,6 +336,8 @@ else()
     BUILD_PLUGIN(TJUGens "${TJUGensSources}" "" "TJUGens")
 endif()
 
+*end mtm block comment* ]]
+
 if (NOVA_DISK_IO)
   add_subdirectory(NovaDiskIO)
 endif()
@@ -337,13 +351,23 @@ if (NOT APPLE)
             DESTINATION ${INSTALL_DESTINATION})
 endif()
 
+#[[ *mtm block comment*
 if(NOT WIN32)
   install(TARGETS ladspalist
     DESTINATION ${INSTALL_DESTINATION_LADSPALIST})
 endif()
+* end mtm block comment* ]]
 
 # install help and sc specific files that are found in 'PLUGIN_NAME/sc' folder
+
+#[[ *mtm block comment*
 foreach (DIR ${PLUGIN_DIRS};${PLUGIN_DIRS_EXTRA})
     install(DIRECTORY "${DIR}/sc/" DESTINATION "${INSTALL_DESTINATION_DISTRO}/${DIR}"
             PATTERN "*")
 endforeach(DIR)
+
+* end mtm block comment * ]]
+
+# * mtm add, replacing the block above *
+install(DIRECTORY "${MYPLUGIN_DIR}/sc/" DESTINATION "${INSTALL_DESTINATION_DISTRO}/${MYPLUGIN_DIR}"
+            PATTERN "*")
